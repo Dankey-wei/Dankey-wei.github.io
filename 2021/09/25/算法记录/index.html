@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2021 | Hexo</title>
+  <title>算法记录 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2021/index.html">
+  <meta name="description" content="算法01:力扣04：寻找两个正序数组的中位数给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。    示例 1：  输入：nums1 &#x3D; [1,3], nums2 &#x3D; [2]  输出：2.00000  解释：合并数组 &#x3D; [1,2,3] ，中位数 2     示例 2：  输入：nums1 &#x3D; [1,2], nums2 &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法记录">
+<meta property="og:url" content="http://example.com/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="算法01:力扣04：寻找两个正序数组的中位数给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。    示例 1：  输入：nums1 &#x3D; [1,3], nums2 &#x3D; [2]  输出：2.00000  解释：合并数组 &#x3D; [1,2,3] ，中位数 2     示例 2：  输入：nums1 &#x3D; [1,2], nums2 &#x3D;">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-25T15:37:48.000Z">
+<meta property="article:modified_time" content="2021-09-25T15:59:04.841Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,130 +154,249 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-算法记录" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      算法记录
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/" class="archive-article-date">
+
+        
+        <a href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/" class="archive-article-date">
   	<time datetime="2021-09-25T15:37:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-25</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/">算法记录</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="算法01"><a href="#算法01" class="headerlink" title="算法01:"></a>算法01:</h1><h2 id="力扣04：寻找两个正序数组的中位数"><a href="#力扣04：寻找两个正序数组的中位数" class="headerlink" title="力扣04：寻找两个正序数组的中位数"></a>力扣04：寻找两个正序数组的中位数</h2><p>给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。</p>
+<blockquote>
+<p>  示例 1：<br>  输入：nums1 = [1,3], nums2 = [2]<br>  输出：2.00000<br>  解释：合并数组 = [1,2,3] ，中位数 2  </p>
+<p>  示例 2：<br>  输入：nums1 = [1,2], nums2 = [3,4]<br>  输出：2.50000<br>  解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5<br>  示例 3：  </p>
+<p>  输入：nums1 = [0,0], nums2 = [0,0]<br>  输出：0.00000<br>  示例 4：  </p>
+<p>  输入：nums1 = [], nums2 = [1]<br>  输出：1.00000<br>  示例 5：  </p>
+<p>  输入：nums1 = [2], nums2 = []<br>  输出：2.00000  
+   </p>
+<p>  提示：  </p>
+<p>  nums1.length == m<br>  nums2.length == n<br>  0 &lt;= m &lt;= 1000<br>  0 &lt;= n &lt;= 1000<br>  1 &lt;= m + n &lt;= 2000<br>  -106 &lt;= nums1[i], nums2[i] &lt;= 106<br> <br>进阶：你能设计一个时间复杂度为 O(log (m+n)) 的算法解决此问题吗？</p>
+</blockquote>
+<h2 id="技巧："><a href="#技巧：" class="headerlink" title="技巧："></a>技巧：</h2><p><strong>对时间复杂度的要求有 ‘log’，通常都需要用到二分查找，这道题也可以通过二分查找实现。</strong>  </p>
+<pre><code>当 m+n 是奇数时，中位数是两个有序数组中的第 (m+n)/2 个元素，当 m+n 是偶数时，中位数是两个有序数组中的第 (m+n)/2 个元素和第 (m+n)/2+1 个元素的平均值。因此，这道题可以转化成寻找两个有序数组中的第 k 小的数，其中 kk 为 (m+n)/2 或 (m+n)/2+1。
+</code></pre>
+<h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><pre><code>public double findMedianSortedArrays(int[] nums1, int[] nums2) &#123;
+    int[] nums;
+    int m = nums1.length;
+    int n = nums2.length;
+    nums = new int[m + n];
+    if (m == 0) &#123;
+        if (n % 2 == 0) &#123;
+            return (nums2[n / 2 - 1] + nums2[n / 2]) / 2.0;
+        &#125; else &#123;
 
-        <div class="article-info info-on-right">
-          
-          
+            return nums2[n / 2];
+        &#125;
+    &#125;
+    if (n == 0) &#123;
+        if (m % 2 == 0) &#123;
+            return (nums1[m / 2 - 1] + nums1[m / 2]) / 2.0;
+        &#125; else &#123;
+            return nums1[m / 2];
+        &#125;
+    &#125;
 
+    int count = 0;
+    int i = 0, j = 0;
+    while (count != (m + n)) &#123;
+        if (i == m) &#123;
+            while (j != n) &#123;
+                nums[count++] = nums2[j++];
+            &#125;
+            break;
+        &#125;
+        if (j == n) &#123;
+            while (i != m) &#123;
+                nums[count++] = nums1[i++];
+            &#125;
+            break;
+        &#125;
+
+        if (nums1[i] &lt; nums2[j]) &#123;
+            nums[count++] = nums1[i++];
+        &#125; else &#123;
+            nums[count++] = nums2[j++];
+        &#125;
+    &#125;
+
+    if (count % 2 == 0) &#123;
+        return (nums[count / 2 - 1] + nums[count / 2]) / 2.0;
+    &#125; else &#123;
+        return nums[count / 2];
+    &#125;
+&#125;
+</code></pre>
+<h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><pre><code>public double findMedianSortedArrays(int[] nums1, int[] nums2) &#123;
+    int n = nums1.length;
+    int m = nums2.length;
+    int left = (n + m + 1) / 2;
+    int right = (n + m + 2) / 2;
+    //将偶数和奇数的情况合并，如果是奇数，会求两次同样的 k 。
+    return (getKth(nums1, 0, n - 1, nums2, 0, m - 1, left) + getKth(nums1, 0, n - 1, nums2, 0, m - 1, right)) * 0.5;  
+    &#125;
+    
+    private int getKth(int[] nums1, int start1, int end1, int[] nums2, int start2, int end2, int k) &#123;
+        int len1 = end1 - start1 + 1;
+        int len2 = end2 - start2 + 1;
+        //让 len1 的长度小于 len2，这样就能保证如果有数组空了，一定是 len1 
+        if (len1 &gt; len2) return getKth(nums2, start2, end2, nums1, start1, end1, k);
+        if (len1 == 0) return nums2[start2 + k - 1];
+
+        if (k == 1) return Math.min(nums1[start1], nums2[start2]);
+
+        int i = start1 + Math.min(len1, k / 2) - 1;
+        int j = start2 + Math.min(len2, k / 2) - 1;
+
+        if (nums1[i] &gt; nums2[j]) &#123;
+            return getKth(nums1, start1, end1, nums2, j + 1, end2, k - (j - start2 + 1));
+        &#125;
+        else &#123;
+            return getKth(nums1, i + 1, end1, nums2, start2, end2, k - (i - start1 + 1));
+        &#125;
+&#125;
+</code></pre>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/" class="archive-article-date">
-  	<time datetime="2021-09-24T05:33:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-24</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2021/9/24学习</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/">2021/9/24学习</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/23/the-first/" class="archive-article-date">
-  	<time datetime="2021-09-23T07:06:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/23/the-first/">the first</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/23/hello-world/" class="archive-article-date">
-  	<time datetime="2021-09-23T06:23:39.170Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/23/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -296,8 +419,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
