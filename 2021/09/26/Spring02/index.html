@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | Hexo</title>
+  <title>Spring02 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="SpringSpring创建对象   使用xml配置文件，使用&lt;bean&gt;    注解  1234&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;       xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring02">
+<meta property="og:url" content="http://example.com/2021/09/26/Spring02/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SpringSpring创建对象   使用xml配置文件，使用&lt;bean&gt;    注解  1234&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;       xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-26T07:50:56.000Z">
+<meta property="article:modified_time" content="2021-09-26T08:55:50.828Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,157 +154,194 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-Spring02" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      Spring02
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/26/Spring02/" class="archive-article-date">
+
+        
+        <a href="/2021/09/26/Spring02/" class="archive-article-date">
   	<time datetime="2021-09-26T07:50:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-26</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/26/Spring02/">Spring02</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="Spring创建对象"><a href="#Spring创建对象" class="headerlink" title="Spring创建对象"></a>Spring创建对象</h2><ul>
+<li>  使用xml配置文件，使用<code>&lt;bean&gt;</code> </li>
+<li>  注解</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">       http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>告诉spring创建对象<br>声明<code>bean</code> ， 就是告诉spring要创建某个类的对象<br><code>id:</code>对象的自定义名称，唯一值。 spring通过这个名称找到对象<br><code>class:</code>类的全限定名称（不能是接口，因为spring是反射机制创建对象，必须使用类）  </p>
+<p>spring就完成 <code>SomeService someService = new SomeServiceImpl();</code><br>spring是把创建好的对象放入到map中， spring框架有一个map存放对象的。<br><code>springMap.put</code>(id的值， 对象）；<br>例如 <code>springMap.put(&quot;someService&quot;, new SomeServiceImpl());</code><br>一个<code>bean</code>标签声明一个对象。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;someService&quot; class=&quot;com.bjpowernode.service.impl.SomeServiceImpl&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;someService1&quot; class=&quot;com.bjpowernode.service.impl.SomeServiceImpl&quot; scope=&quot;prototype&quot;/&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>spring能创建一个非自定义类的对象吗， 创建一个存在的某个类的对象。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    &lt;bean id=&quot;mydate&quot; class=&quot;java.util.Date&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+<h2 id="spring注入"><a href="#spring注入" class="headerlink" title="spring注入"></a>spring注入</h2><h3 id="set注入"><a href="#set注入" class="headerlink" title="set注入"></a>set注入</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--声明student对象</span><br><span class="line">    注入：就是赋值的意思</span><br><span class="line">    简单类型： spring中规定java的基本数据类型和String都是简单类型。</span><br><span class="line">    di:给属性赋值</span><br><span class="line">    1. set注入（设值注入） ：spring调用类的set方法， 你可以在set方法中完成属性赋值</span><br><span class="line">         1）简单类型的set注入</span><br><span class="line">            &lt;bean id=&quot;xx&quot; class=&quot;yyy&quot;&gt;</span><br><span class="line">               &lt;property name=&quot;属性名字&quot; value=&quot;此属性的值&quot;/&gt;</span><br><span class="line">               一个property只能给一个属性赋值</span><br><span class="line">               &lt;property....&gt;</span><br><span class="line">            &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">         2) 引用类型的set注入 ： spring调用类的set方法</span><br><span class="line">           &lt;bean id=&quot;xxx&quot; class=&quot;yyy&quot;&gt;</span><br><span class="line">              &lt;property name=&quot;属性名称&quot; ref=&quot;bean的id(对象的名称)&quot; /&gt;</span><br><span class="line">           &lt;/bean&gt;</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;bean id=&quot;myStudent&quot; class=&quot;com.bjpowernode.ba02.Student&quot; &gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;李四&quot; /&gt;</span><br><span class="line">        &lt;property name=&quot;age&quot; value=&quot;26&quot; /&gt;</span><br><span class="line">        &lt;!--引用类型--&gt;</span><br><span class="line">        &lt;property name=&quot;school&quot; ref=&quot;mySchool&quot; /&gt;&lt;!--setSchool(mySchool)--&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--声明School对象--&gt;</span><br><span class="line">    &lt;bean id=&quot;mySchool&quot; class=&quot;com.bjpowernode.ba02.School&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;北京大学&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;address&quot; value=&quot;北京的海淀区&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="构造注入"><a href="#构造注入" class="headerlink" title="构造注入"></a>构造注入</h3><p>构造注入：spring调用类<strong>有参数构造方法</strong>，在创建对象的同时，在构造方法中给属性赋值。<br>          构造注入使用 <code>&lt;constructor-arg&gt;</code> 标签<br>          <code>&lt;constructor-arg&gt;</code> 标签：一个<code>&lt;constructor-arg&gt;</code>表示构造方法一个参数。<br>          <code>&lt;constructor-arg&gt;</code> 标签属性：<br>             <code>name:</code>表示构造方法的形参名<br>             <code>index:</code>表示构造方法的参数的位置，参数从左往右位置是 0 ， 1 ，2的顺序<br>             <code>value：</code>构造方法的形参类型是简单类型的，使用value<br>             <code>ref：</code>构造方法的形参类型是引用类型的，使用ref  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--使用name属性实现构造注入--&gt;</span><br><span class="line">    &lt;bean id=&quot;myStudent&quot; class=&quot;com.bjpowernode.ba03.Student&quot; &gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;myage&quot; value=&quot;20&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;mySchool&quot; ref=&quot;myXueXiao&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;myname&quot; value=&quot;周良&quot;/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--使用index属性--&gt;</span><br><span class="line">    &lt;bean id=&quot;myStudent2&quot; class=&quot;com.bjpowernode.ba03.Student&quot;&gt;</span><br><span class="line">        &lt;constructor-arg index=&quot;1&quot; value=&quot;22&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg index=&quot;0&quot; value=&quot;李四&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg index=&quot;2&quot; ref=&quot;myXueXiao&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--省略index--&gt;</span><br><span class="line">    &lt;bean id=&quot;myStudent3&quot; class=&quot;com.bjpowernode.ba03.Student&quot;&gt;</span><br><span class="line">        &lt;constructor-arg  value=&quot;张强强&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg  value=&quot;22&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg  ref=&quot;myXueXiao&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;!--声明School对象--&gt;</span><br><span class="line">    &lt;bean id=&quot;myXueXiao&quot; class=&quot;com.bjpowernode.ba03.School&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;清华大学&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;address&quot; value=&quot;北京的海淀区&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--创建File,使用构造注入--&gt;</span><br><span class="line">    &lt;bean id=&quot;myfile&quot; class=&quot;java.io.File&quot;&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;parent&quot; value=&quot;D:\course\JavaProjects\spring-course\ch01-hello-spring&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;child&quot; value=&quot;readme.txt&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 
+<h2 id="spring自动注入"><a href="#spring自动注入" class="headerlink" title="spring自动注入"></a>spring自动注入</h2><p> 引用类型的<strong>自动注入</strong>： spring框架根据某些规则可以给引用类型赋值。<br> 使用的规则常用的是byName, byType.  </p>
+<h3 id="1-byName-按名称注入-："><a href="#1-byName-按名称注入-：" class="headerlink" title="1.byName(按名称注入) ："></a>1.<code>byName</code>(按名称注入) ：</h3><p>java类中引用类型的<strong>属性名和spring容器中（配置文件）<bean>的id名称一样</strong>，<br><strong>且数据类型是一致</strong>的，这样的容器中的bean，spring能够赋值给引用类型。</p>
+<p>语法：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    &lt;bean id=&quot;xx&quot; class=&quot;yyy&quot; autowire=&quot;byName&quot;&gt;</span><br><span class="line">        简单类型属性赋值</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">````  </span><br></pre></td></tr></table></figure>
+<pre><code>&lt;bean id=&quot;myStudent&quot; class=&quot;com.bjpowernode.ba04.Student&quot;  autowire=&quot;byName&quot;&gt;
+    &lt;property name=&quot;name&quot; value=&quot;李四&quot; /&gt;
+    &lt;property name=&quot;age&quot; value=&quot;26&quot; /&gt;
+    &lt;!--引用类型--&gt;
+    &lt;!--&lt;property name=&quot;school&quot; ref=&quot;mySchool&quot; /&gt;--&gt;
+&lt;/bean&gt;
+
+&lt;!--声明School对象--&gt;
+&lt;bean id=&quot;school&quot; class=&quot;com.bjpowernode.ba04.School&quot;&gt;
+    &lt;property name=&quot;name&quot; value=&quot;清华大学&quot;/&gt;
+    &lt;property name=&quot;address&quot; value=&quot;北京的海淀区&quot; /&gt;
+&lt;/bean&gt;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">### 2.`byType`(按类型注入) ： </span><br><span class="line">java类中引用类型的数据类型和spring容器中（配置文件）&lt;bean&gt;的class属性  </span><br><span class="line">是**同源关系**的，这样的bean能够赋值给引用类型  </span><br><span class="line">同源就是一类的意思：  </span><br><span class="line">1. java类中引用类型的数据类型和bean的class的值是**一样**的。  </span><br><span class="line">2. java类中引用类型的数据类型和bean的class的值**父子类关系**(`extend`)的。  </span><br><span class="line">3. java类中引用类型的数据类型和bean的class的值**接口和实现类关系**的 </span><br><span class="line"></span><br><span class="line">语法：</span><br></pre></td></tr></table></figure>
+<pre><code>     &lt;bean id=&quot;xx&quot; class=&quot;yyy&quot; autowire=&quot;byType&quot;&gt;
+        简单类型属性赋值
+     &lt;/bean&gt;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">````</span><br><span class="line">    &lt;bean id=&quot;myStudent&quot; class=&quot;com.bjpowernode.ba05.Student&quot;  autowire=&quot;byType&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;张飒&quot; /&gt;</span><br><span class="line">        &lt;property name=&quot;age&quot; value=&quot;26&quot; /&gt;</span><br><span class="line">        &lt;!--引用类型--&gt;</span><br><span class="line">        &lt;!--&lt;property name=&quot;school&quot; ref=&quot;mySchool&quot; /&gt;--&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--声明School对象--&gt;</span><br><span class="line">    &lt;bean id=&quot;mySchool&quot; class=&quot;com.bjpowernode.ba05.School&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;人民大学&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;address&quot; value=&quot;北京的海淀区&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--声明School的子类--&gt;</span><br><span class="line">    &lt;!--&lt;bean id=&quot;primarySchool&quot; class=&quot;com.bjpowernode.ba05.PrimarySchool&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;北京小学&quot; /&gt;</span><br><span class="line">        &lt;property name=&quot;address&quot; value=&quot;北京的大兴区&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;--&gt;</span><br></pre></td></tr></table></figure>
+<p>注意：在byType中， 在xml配置文件中声明bean只能有一个符合条件的，<br>              多余一个是错误的</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/09/26/Spring02/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/" class="archive-article-date">
-  	<time datetime="2021-09-25T15:37:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-25</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">算法记录</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/">算法记录</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/" class="archive-article-date">
-  	<time datetime="2021-09-24T05:33:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/">2021/9/24学习</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/23/the-first/" class="archive-article-date">
-  	<time datetime="2021-09-23T07:06:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/23/the-first/">the first</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/23/hello-world/" class="archive-article-date">
-  	<time datetime="2021-09-23T06:23:39.170Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/23/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -323,8 +364,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
