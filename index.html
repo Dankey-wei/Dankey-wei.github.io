@@ -152,6 +152,183 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-spring03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/28/spring03/">spring03</a>
+    </h1>
+  
+
+        
+        <a href="/2021/09/28/spring03/" class="archive-article-date">
+  	<time datetime="2021-09-28T11:10:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="为什么多配置文件？"><a href="#为什么多配置文件？" class="headerlink" title="为什么多配置文件？"></a>为什么多配置文件？</h2><p>当实际项目开发过程中，往往有多个开发人员进行操作编写  </p>
+<h3 id="多个配置优势"><a href="#多个配置优势" class="headerlink" title="多个配置优势"></a>多个配置优势</h3><ol>
+<li>每个文件的大小比一个文件要小很多。效率高  </li>
+<li>避免多人竞争带来的冲突。  </li>
+</ol>
+<p>  如果你的项目有多个模块（相关的功能在一起） ，一个模块一个配置文件。<br>  学生考勤模块一个配置文件，  张三<br>  学生成绩一个配置文件，      李四  </p>
+<h3 id="多文件的分配方式："><a href="#多文件的分配方式：" class="headerlink" title="多文件的分配方式："></a>多文件的分配方式：</h3><ol>
+<li>按功能模块，一个模块一个配置文件</li>
+<li>按类的功能，数据库相关的配置一个文件配置文件， 做事务的功能一个配置文件， 做service功能的一个配置文件等</li>
+</ol>
+<p>  例如：<br>  totao.xml<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--</span><br><span class="line">         包含关系的配置文件：</span><br><span class="line">         spring-total表示主配置文件 ： 包含其他的配置文件的，主配置文件一般是不定义对象的。</span><br><span class="line">         语法：&lt;import resource=&quot;其他配置文件的路径&quot; /&gt;</span><br><span class="line">         关键字：&quot;classpath:&quot; 表示类路径（class文件所在的目录），</span><br><span class="line">               在spring的配置文件中要指定其他文件的位置， 需要使用classpath，告诉spring到哪去加载读取文件。</span><br><span class="line">    --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--加载的是文件列表--&gt;</span><br><span class="line">    &lt;!--</span><br><span class="line">    &lt;import resource=&quot;classpath:ba06/spring-school.xml&quot; /&gt;</span><br><span class="line">    &lt;import resource=&quot;classpath:ba06/spring-student.xml&quot; /&gt;</span><br><span class="line">    --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--</span><br><span class="line">       在包含关系的配置文件中，可以通配符（*：表示任意字符）</span><br><span class="line">       注意： 主的配置文件名称不能包含在通配符的范围内（不能叫做spring-total.xml）</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;import resource=&quot;classpath:ba06/spring-*.xml&quot; /&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure><br>  spring-school.xml<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!--School模块所有bean的声明， School模块的配置文件--&gt;</span><br><span class="line">    &lt;!--声明School对象--&gt;</span><br><span class="line">    &lt;bean id=&quot;mySchool&quot; class=&quot;com.bjpowernode.ba06.School&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;航空大学&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;address&quot; value=&quot;北京的海淀区&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure><br>  spring-student.xml<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!--</span><br><span class="line">      student模块所有bean的声明</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;!--byType--&gt;</span><br><span class="line">    &lt;bean id=&quot;myStudent&quot; class=&quot;com.bjpowernode.ba06.Student&quot;  autowire=&quot;byType&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;张飒&quot; /&gt;</span><br><span class="line">        &lt;property name=&quot;age&quot; value=&quot;30&quot; /&gt;</span><br><span class="line">        &lt;!--引用类型--&gt;</span><br><span class="line">        &lt;!--&lt;property name=&quot;school&quot; ref=&quot;mySchool&quot; /&gt;--&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure><br>  test.java<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  public class MyTest06 &#123;</span><br><span class="line">   @Test</span><br><span class="line">    public void test01()&#123;</span><br><span class="line">      //加载的是总的文件</span><br><span class="line">       String config= &quot;ba06/total.xml&quot;;</span><br><span class="line">       ApplicationContext ac = new ClassPathXmlApplicationContext(config);</span><br><span class="line"></span><br><span class="line">       //从容器中获取Student对象</span><br><span class="line">       Student myStudent =  (Student) ac.getBean(&quot;myStudent&quot;);</span><br><span class="line">       System.out.println(&quot;student对象=&quot;+myStudent);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><p>基于注解的di： 通过注解完成java对象创建，属性赋值。<br>  使用注解的步骤： </p>
+<ol>
+<li><p>加入maven的依赖 spring-context ，在你加入spring-context的同时， 间接加入spring-aop的依赖。<br>   使用注解必须使用spring-aop依赖  </p>
+</li>
+<li><p>在类中加入spring的注解（多个不同功能的注解）</p>
+</li>
+<li><p>在spring的配置文件中，加入一个组件扫描器的标签，说明注解在你的项目中的位置</p>
+<p>学习的注解：  </p>
+<ol>
+<li>@Component</li>
+<li>@Respotory</li>
+<li>@Service</li>
+<li>@Controller</li>
+<li>@Value</li>
+<li>@Autowired</li>
+<li>@Resource</li>
+</ol>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/09/28/spring03/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-算法02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/27/%E7%AE%97%E6%B3%9502/">算法02</a>
+    </h1>
+  
+
+        
+        <a href="/2021/09/27/%E7%AE%97%E6%B3%9502/" class="archive-article-date">
+  	<time datetime="2021-09-27T08:14:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="课堂笔记"><a href="#课堂笔记" class="headerlink" title="课堂笔记"></a>课堂笔记</h1><h2 id="算法思想：分治法"><a href="#算法思想：分治法" class="headerlink" title="算法思想：分治法"></a>算法思想：分治法</h2><p>讲一个问题分解为多个子问题<br>一个分治法将规模为n的问题分成k个规模为n/m的子问题去解。设分解阈值$$n0=1$$，且最小子解规模为1的问题消耗一个单位时间。设将原问题分解为k个子问题以及用merge将K个子问题的解合并为原问题的解需用f(n)个单位时间，用T(n)表示该分治法解规模为|P|=n的问题所需的计算时间：<br>$$T(n)=kT(n/m)+f(n)$$<br>可以使用分治法求解的一些经典问题:</p>
+<ul>
+<li>  二分搜索</li>
+<li>  大整数乘法</li>
+<li>  Strassen矩阵乘法</li>
+<li>  棋盘覆盖</li>
+<li>  合并排序</li>
+<li>  快速排序</li>
+<li>  线性时间选择</li>
+<li>  最接近点对问题</li>
+<li>  循环赛日程表</li>
+<li>  汉诺塔</li>
+</ul>
+<h1 id="算法02"><a href="#算法02" class="headerlink" title="算法02"></a>算法02</h1><h2 id="最长回文子串"><a href="#最长回文子串" class="headerlink" title="最长回文子串"></a>最长回文子串</h2><p>给你一个字符串 s，找到 s 中最长的回文子串。</p>
+<p> </p>
+<blockquote>
+<p>示例 1：<br>输入：s = “babad”<br>输出：”bab”<br>解释：”aba” 同样是符合题意的答案。  </p>
+<p>示例 2：<br>输入：s = “cbbd”<br>输出：”bb”</p>
+<p>示例 3：<br>输入：s = “a”<br>输出：”a” </p>
+<p>示例 4<br>输入：s = “ac”<br>输出：”a”
+ </p>
+</blockquote>
+<p>提示：<br>1 &lt;= s.length &lt;= 1000<br>s 仅由数字和英文字母（大写和/或小写）组成  </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/09/27/%E7%AE%97%E6%B3%9502/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Spring02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -187,9 +364,7 @@
 <blockquote>
 <ol>
 <li>set注入（设值注入） ：spring调用类的set方法， 你可以在set方法中完成属性赋值  <blockquote>
-<ol>
-<li>简单类型的set注入  </li>
-</ol>
+<p>  简单类型的set注入  </p>
 </blockquote>
 </li>
 </ol>
@@ -197,9 +372,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;xx&quot; class=&quot;yyy&quot;&gt;</span><br><span class="line">   &lt;property name=&quot;属性名字&quot; value=&quot;此属性的值&quot;/&gt;</span><br><span class="line">   一个property只能给一个属性赋值</span><br><span class="line">   &lt;property....&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <blockquote>
-<ol start="2">
-<li>引用类型的set注入 ： spring调用类的set方法</li>
-</ol>
+<p> 引用类型的set注入 ： spring调用类的set方法</p>
 </blockquote>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;xxx&quot; class=&quot;yyy&quot;&gt;</span><br><span class="line">   &lt;property name=&quot;属性名称&quot; ref=&quot;bean的id(对象的名称)&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
