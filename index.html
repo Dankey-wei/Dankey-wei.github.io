@@ -152,6 +152,208 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-spring05" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/30/spring05/">spring05</a>
+    </h1>
+  
+
+        
+        <a href="/2021/09/30/spring05/" class="archive-article-date">
+  	<time datetime="2021-09-30T05:33:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><h2 id="什么是动态代理-？"><a href="#什么是动态代理-？" class="headerlink" title="什么是动态代理 ？"></a>什么是动态代理 ？</h2><p>使用<strong>jdk的反射机制</strong>，<strong>创建对象</strong>的能力， 创建的是代理类的对象。 而不用你创建类文件。不用写java文件。<br>动态：在程序执行时，调用jdk提供的方法才能创建代理类的对象。</p>
+<p>jdk动态代理，必须<strong>有接口</strong>，目标类必须实现接口，没有接口时，需要使用<strong>cglib动态代理</strong>。</p>
+<h2 id="知道动态代理能做什么-？"><a href="#知道动态代理能做什么-？" class="headerlink" title="知道动态代理能做什么 ？"></a>知道动态代理能做什么 ？</h2><p>可以在不改变原来目标方法功能的前提下，可以在代理中<strong>增强自己的功能代码</strong>(添加自己的代码)。<br>程序开发中的意思。<br>比如：你所在的项目中，有一个功能是其他人（公司的其它部门，其它小组的人）写好的，你可以使用。<br><code>GoNong.class ,  GoNong gn = new GoNong(), gn.print();</code><br>你发现这个功能，现在还缺点， 不能完全满足我项目的需要。 我需要在<code>gn.print()</code>执行后，需要自己在增加代码。<br>用代理实现 <code>gn.print（）</code>调用时， 增加自己代码， 而不用去改原来的 GoNong文件。</p>
+<h2 id="如何实现动态代理"><a href="#如何实现动态代理" class="headerlink" title="如何实现动态代理"></a>如何实现动态代理</h2><blockquote>
+<p>jdk动态代理实现步骤：</p>
+<blockquote>
+<ol>
+<li>创建目标类， SomeServiceImpl目标类，给它的doSome, doOther增加 输出时间， 事务。  </li>
+<li>创建InvocationHandler接口的实现类， 在这个类实现给目标方法增加功能。 <blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;public class MyIncationHandler implements InvocationHandler &#123;</span><br><span class="line">   //目标对象</span><br><span class="line">   private Object target; //SomeServiceImpl类</span><br><span class="line">   public MyIncationHandler(Object target) &#123;</span><br><span class="line">       this.target = target;</span><br><span class="line">   &#125;</span><br><span class="line">   @Override</span><br><span class="line">   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</span><br><span class="line">       //通过代理对象执行方法时，会调用执行这个invoke（）</span><br><span class="line">       System.out.println(&quot;执行MyIncationHandler中的invoke()&quot;);</span><br><span class="line">       System.out.println(&quot;method名称：&quot;+method.getName());</span><br><span class="line">       String methodName = method.getName();</span><br><span class="line">       Object res = null;</span><br><span class="line"></span><br><span class="line">       if(&quot;doSome&quot;.equals(methodName))&#123; //JoinPoint  Pointcut</span><br><span class="line">           ServiceTools.doLog(); //在目标方法之前，输出时间</span><br><span class="line">           //执行目标类的方法，通过Method类实现</span><br><span class="line">           res  = method.invoke(target,args); //SomeServiceImpl.doSome()</span><br><span class="line">           ServiceTools.doTrans(); //在目标方法执行之后，提交事务</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           res  = method.invoke(target,args); //SomeServiceImpl.doOther()</span><br><span class="line">       &#125;</span><br><span class="line">       //目标方法的执行结果</span><br><span class="line">       return res;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt;&gt;&#125;</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+<li>使用jdk中 类Proxy，创建代理对象。 实现创建对象的能力。</li>
+</ol>
+<blockquote>
+<pre><code>public class MyApp &#123;
+   public static void main(String[] args) &#123;
+       //调用doSome, doOther
+       //SomeService service = new SomeServiceImpl();
+       //service.doSome();
+       //System.out.println(&quot;============================================&quot;);
+       //service.doOther();
+
+       //使用jdk的Proxy创建代理对象
+       //创建目标对象
+       SomeService target = new SomeServiceImpl();
+
+       //创建InvocationHandler对象
+       InvocationHandler handler = new MyIncationHandler(target);
+
+       //使用Proxy创建代理
+       SomeService proxy = (SomeService) Proxy.newProxyInstance(
+               target.getClass().getClassLoader(),
+               target.getClass().getInterfaces(),handler);
+       //com.sun.proxy.$Proxy0
+       System.out.println(&quot;proxy======&quot;+proxy.getClass().getName());
+       //通过代理执行方法，会调用handler中的invoke（）
+       proxy.doSome();
+       System.out.printl(&quot;==================================================&quot;);
+       proxy.doOther();
+   &#125;
+&#125;
+</code></pre>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="spring"><a href="#spring" class="headerlink" title="spring"></a>spring</h1><h2 id="AOP-动态代理的规范化"><a href="#AOP-动态代理的规范化" class="headerlink" title="AOP:动态代理的规范化"></a>AOP:动态代理的规范化</h2><h3 id="动态代理-1"><a href="#动态代理-1" class="headerlink" title="动态代理"></a>动态代理</h3><p>  实现方式：jdk动态代理，使用jdk中的<code>Proxy</code>，<code>Method</code>，<code>InvocaitonHanderl</code>创建代理对象。jdk动态代理要求目标类必须实现接口  </p>
+<p>  cglib动态代理：第三方的工具库，创建代理对象，原理是继承。 通过继承目标类，创建子类。子类就是代理对象。 要求目标类不能是final的， 方法也不能是final的  </p>
+<h3 id="动态代理的作用："><a href="#动态代理的作用：" class="headerlink" title="动态代理的作用："></a>动态代理的作用：</h3><ol>
+<li>在目标类源代码不改变的情况下，增加功能。</li>
+<li>减少代码的重复</li>
+<li>专注业务逻辑代码</li>
+<li>解耦合，让你的业务功能和日志，事务非业务功能分离。</li>
+</ol>
+<h3 id="Aop-面向切面编程，-基于动态代理的，可以使用jdk，cglib两种代理方式。"><a href="#Aop-面向切面编程，-基于动态代理的，可以使用jdk，cglib两种代理方式。" class="headerlink" title="Aop:面向切面编程， 基于动态代理的，可以使用jdk，cglib两种代理方式。"></a>Aop:面向切面编程， 基于动态代理的，可以使用jdk，cglib两种代理方式。</h3><ul>
+<li>Aop就是动态代理的规范化， 把动态代理的实现步骤，方式都定义好了，<strong>让开发人员用一种统一的方式</strong>，使用动态代理。</li>
+</ul>
+<h3 id="AOP（Aspect-Orient-Programming）面向切面编程"><a href="#AOP（Aspect-Orient-Programming）面向切面编程" class="headerlink" title="AOP（Aspect Orient Programming）面向切面编程"></a>AOP（Aspect Orient Programming）面向切面编程</h3><blockquote>
+<p>Aspect: 切面，给你的目标类增加的功能，就是切面。 像上面用的日志，事务都是切面。<br>       切面的特点： 一般都是非业务方法，独立使用的。<br>Orient：面向， 对着。<br>Programming：编程<br>oop: 面向对象编程(以对象为基础，构建对象、类、方法)</p>
+</blockquote>
+<p>怎么理解面向切面编程 ？</p>
+<ol>
+<li>需要在分析项目功能时，找出切面。 </li>
+<li>合理的安排切面的执行时间（在目标方法前， 还是目标方法后）</li>
+<li>合理的安全切面执行的位置，在哪个类，哪个方法增加增强功能</li>
+</ol>
+<h3 id="术语："><a href="#术语：" class="headerlink" title="术语："></a>术语：</h3><blockquote>
+<ol>
+<li><p>Aspect:切面，表示增强的功能， 就是一堆代码，完成某个一个功能。非业务功能,常见的切面功能有日志，事务，统计信息，参数检查，权限验证。  </p>
+</li>
+<li><p>JoinPoint:连接点 ，连接业务方法和切面的位置。 就某类中的<strong>一个业务方法</strong></p>
+</li>
+<li><p>Pointcut : 切入点 ，指<strong>多个连接点方法的集合</strong>。多个方法</p>
+</li>
+<li><p>目标对象： 给哪个类的方法增加功能， 这个类就是目标对象</p>
+</li>
+<li><p>Advice:通知，通知表示切面功能执行的时间。</p>
+</li>
+</ol>
+<p>切面有三个关键的要素：</p>
+<blockquote>
+<ol>
+<li>切面的<strong>功能代码</strong>，切面干什么</li>
+<li>切面的<strong>执行位置</strong>，使用Pointcut表示切面执行的位置</li>
+<li>切面的<strong>执行时间</strong>，使用Advice表示时间，在目标方法之前，还是目标方法之后。</li>
+</ol>
+</blockquote>
+</blockquote>
+<h3 id="aop的实现"><a href="#aop的实现" class="headerlink" title="aop的实现"></a>aop的实现</h3><p>aop是一个规范，是动态的一个规范化，一个标准</p>
+<blockquote>
+<p>aop的技术实现框架：</p>
+<ol>
+<li>spring：spring在内部实现了aop规范，能做aop的工作。<br>spring主要在事务处理时使用aop。<br>我们项目开发中很少使用spring的aop实现。 因为spring的aop比较笨重。</li>
+</ol>
+<ol start="2">
+<li>aspectJ: 一个开源的专门做aop的框架。spring框架中集成了aspectj框架，通过spring就能使用aspectj的功能。  <blockquote>
+<p>aspectJ框架实现aop有两种方式：</p>
+<ol>
+<li>使用xml的配置文件 ： 配置全局事务</li>
+<li>使用注解，我们在项目中要做aop功能，一般都使用注解， aspectj有5个注解。</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+<h3 id="学习aspectj框架的使用。"><a href="#学习aspectj框架的使用。" class="headerlink" title="学习aspectj框架的使用。"></a>学习aspectj框架的使用。</h3><ol>
+<li>切面的执行时间， 这个执行时间在规范中叫做Advice(通知，增强),在aspectj框架中使用注解表示的。<br>也可以使用xml配置文件中的标签  </li>
+</ol>
+<blockquote>
+<pre><code>   1）@Before
+   2）@AfterReturning
+   3）@Around
+   4）@AfterThrowing
+   5）@After
+</code></pre>
+</blockquote>
+<ol start="2">
+<li>表示切面执行的位置，使用的是切入点表达式:  </li>
+</ol>
+<p><strong>execution(访问权限 <font color="red">方法返回值 方法声明（参数)</font> 异常类型)</strong> </p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>0至多个任意字符</td>
+</tr>
+<tr>
+<td>..</td>
+<td>用在方法参数中，表示任意多个参数；用在包名后，表示当前包及其子包路径</td>
+</tr>
+<tr>
+<td>+</td>
+<td>用在类名后，表示当前类及其子类；用在接口后，表示当前接口及其实现类</td>
+</tr>
+</tbody></table>
+<p>例如：<br><code>execution(public * *(..))</code>:指定切入点为任意公共方法类。<br><code>execution(* set*(..))</code>:指定切入点为：任意一个以<code>set</code>开始的方法 。<br><code>exection(* com.xyz.service.*.*(..))</code>:制定切入点为：com.xyz.service包内任意方法。<br><code>execution(* *..service.*.*(..))</code> :指定所有报下的service子包下的所有类（接口）中所有方法为切入点。<br>com.service.impl<br>com.bjpowrnode.service.impl<br>cn.crm.bjpowernode.service         </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/09/30/spring05/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-spring04" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -242,7 +444,7 @@
 <h3 id="加载配置文件"><a href="#加载配置文件" class="headerlink" title="加载配置文件"></a>加载配置文件</h3><pre><code>    &lt;!--加载属性配置文件--&gt;
     &lt;context:property-placeholder location=&quot;classpath:test.properties&quot; /&gt;
 </code></pre>
-<h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1>
+
       
 
       
