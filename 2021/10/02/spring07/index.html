@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | Hexo</title>
+  <title>spring07 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="MyBatis使用步骤 新建student表 加入maven的mybatis坐标，mysql驱动的坐标123456789101112&lt;!--mybatis依赖--&gt;    &lt;dependency&gt;      &lt;groupId&gt;org.mybatis&lt;&#x2F;groupId&gt;      &lt;artifactId&gt;mybatis&lt;&#x2F;artifa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring07">
+<meta property="og:url" content="http://example.com/2021/10/02/spring07/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MyBatis使用步骤 新建student表 加入maven的mybatis坐标，mysql驱动的坐标123456789101112&lt;!--mybatis依赖--&gt;    &lt;dependency&gt;      &lt;groupId&gt;org.mybatis&lt;&#x2F;groupId&gt;      &lt;artifactId&gt;mybatis&lt;&#x2F;artifa">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-02T04:44:32.000Z">
+<meta property="article:modified_time" content="2021-10-02T10:59:26.335Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,295 +154,225 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-spring07" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      spring07
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/02/spring07/" class="archive-article-date">
+
+        
+        <a href="/2021/10/02/spring07/" class="archive-article-date">
   	<time datetime="2021-10-02T04:44:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/02/spring07/">spring07</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis"></a>MyBatis</h1><h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
+<li>新建student表</li>
+<li>加入maven的mybatis坐标，mysql驱动的坐标<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--mybatis依赖--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;mybatis&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;3.5.1&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">    &lt;!--mysql驱动--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;5.1.9&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li>创建实体类 ，Student表中的一行数据</li>
+<li>创建持久层的<strong>dao接口</strong>，定义操作数据库的方法</li>
+<li>创建一个mybatis使用的配置文件<br> 叫做<strong>sql映射文件</strong>(mapper)：写sql语句的。一般一个表一个sql映射文件，文件是xml文件。<ol>
+<li>写在接口所在的目录中</li>
+<li>文件名称和接口名称一致<blockquote>
+<p>sql映射文件（sql mapper）： 写sql语句的， mybatis会执行这些sql</p>
+<ol>
+<li>指定约束文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE mapper</span><br><span class="line">   PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span><br><span class="line">   &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+<p><code>mybatis-3-mapper.dtd</code>是约束文件的名称， 扩展名是dtd的。 </p>
+<ol start="2">
+<li><p>约束文件作用：  限制，检查在当前文件中出现的标签，属性必须符合mybatis的要求。</p>
+</li>
+<li><p><code>mapper </code>是当前文件的根标签，必须的。<br><code>namespace</code>：叫做命名空间，<strong>唯一值的</strong>， 可以是自定义的字符串。<br>要求你使用dao接口的全限定名称(绝对路径)。 </p>
+</li>
+<li><p>在当前文件中，可以使用特定的标签，表示数据库的特定操作。<br><code>&lt;select&gt;</code>:表示执行查询，select语句<br><code>&lt;update&gt;</code>:表示更新数据库的操作， 就是在<code>&lt;update&gt;</code>标签中 写的是update sql语句<br><code>&lt;insert&gt;</code>:表示插入，放的是insert语句<br><code>&lt;delete&gt;</code>:表示删除，执行的delete语句    </p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE mapper</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span><br><span class="line">&lt;mapper namespace=&quot;com.bjpowernode.dao.StudentDao&quot;&gt;</span><br><span class="line">    &lt;!--</span><br><span class="line">       select:表示查询操作。</span><br><span class="line">       id: 你要执行的sql语法的唯一标识， mybatis会使用这个id的值来找到要执行的sql语句</span><br><span class="line">           可以自定义，但是要求你使用接口中的方法名称。</span><br><span class="line"></span><br><span class="line">       resultType:表示结果类型的， 是sql语句执行后得到ResultSet,遍历这个ResultSet得到&gt;&gt;java对象的类型。</span><br><span class="line">          值写的类型的全限定名称</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;select id=&quot;selectStudents&quot; resultType=&quot;com.bjpowernode.domain.Student&quot; &gt;</span><br><span class="line">        select id,name,email,age from student order by id//查询出的值赋给Student对象</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--插入操作--&gt;</span><br><span class="line">    &lt;insert id=&quot;insertStudent&quot;&gt;</span><br><span class="line">        insert into student values(#&#123;id&#125;,#&#123;name&#125;,#&#123;email&#125;,#&#123;age&#125;)</span><br><span class="line">    &lt;/insert&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+</ol>
+</li>
+<li>使用mybatis的对象SqlSession，通过他的方法执行sql语句。<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt;public class MyApp &#123;</span><br><span class="line"></span><br><span class="line">   public static void main(String[] args) throws IOException &#123;</span><br><span class="line">       //访问mybatis读取student数据</span><br><span class="line">       //1.定义mybatis主配置文件的名称, 从类路径的根开始（target/clasess）</span><br><span class="line">       String config=&quot;mybatis.xml&quot;;</span><br><span class="line">       //2.读取这个config表示的文件</span><br><span class="line">       InputStream in = Resources.getResourceAsStream(config);</span><br><span class="line">       //3.创建了SqlSessionFactoryBuilder对象</span><br><span class="line">       SqlSessionFactoryBuilder builder  = new SqlSessionFactoryBuilder();</span><br><span class="line">       //4.创建SqlSessionFactory对象</span><br><span class="line">       SqlSessionFactory factory = builder.build(in);</span><br><span class="line">       //5.获取SqlSession对象，从SqlSessionFactory中获取SqlSession</span><br><span class="line">       SqlSession sqlSession = factory.openSession();</span><br><span class="line">       //6.【重要】指定要执行的sql语句的标识。  sql映射文件中的namespace + &quot;.&quot; + 标签的id值</span><br><span class="line">       //String sqlId = &quot;com.bjpowernode.dao.StudentDao&quot; + &quot;.&quot; + &quot;selectStudents&quot;;</span><br><span class="line">       String sqlId = &quot;com.bjpowernode.dao.StudentDao.selectStudents&quot;;</span><br><span class="line">       //7. 重要】执行sql语句，通过sqlId找到语句</span><br><span class="line">       List&lt;Student&gt; studentList = sqlSession.selectList(sqlId);</span><br><span class="line">       //8.输出结果</span><br><span class="line">       //studentList.forEach( stu -&gt; System.out.println(stu));</span><br><span class="line">       for(Student stu : studentList)&#123;</span><br><span class="line">           System.out.println(&quot;查询的学生=&quot;+stu);</span><br><span class="line">       &#125;</span><br><span class="line">       //9.关闭SqlSession对象</span><br><span class="line">       sqlSession.close();</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+<li>创建mybatis的主配置文件： 1)连接数据库；2）指定mapper文件的位置<br> 一个项目就一个主配置文件<br> 主配置文件提供了提供了数据库的连接信息和sql映射文件的位置信息    <blockquote>
+<p>mybatis的主配置文件： 主要定义了数据库的配置信息， sql映射文件的位置</p>
+<ol>
+<li><p>约束文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">     PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">     &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
 
+<p>mybatis-3-config.dtd：约束文件的名称</p>
+</li>
+<li><p>configuration 根标签。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">&gt;&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!--settings：控制mybatis全局行为--&gt;</span><br><span class="line">   &lt;settings&gt;</span><br><span class="line">       &lt;!--设置mybatis输出日志--&gt;</span><br><span class="line">       &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot; /&gt;</span><br><span class="line">   &lt;/settings&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!--环境配置： 数据库的连接信息</span><br><span class="line">       default:必须和某个environment的id值一样。</span><br><span class="line">       告诉mybatis使用哪个数据库的连接信息。也就是访问哪个数据库</span><br><span class="line">   --&gt;</span><br><span class="line">   &lt;environments default=&quot;mydev&quot;&gt;</span><br><span class="line">       &lt;!-- environment : 一个数据库信息的配置， 环境</span><br><span class="line">            id:一个唯一值，自定义，表示环境的名称。</span><br><span class="line">       --&gt;</span><br><span class="line">       &lt;environment id=&quot;mydev&quot;&gt;</span><br><span class="line">           &lt;!--</span><br><span class="line">              transactionManager ：mybatis的事务类型</span><br><span class="line">                  type: JDBC(表示使用jdbc中的Connection对象的commit，rollback做事务处理)</span><br><span class="line">           --&gt;</span><br><span class="line">           &lt;transactionManager type=&quot;JDBC&quot;/&gt;</span><br><span class="line">           &lt;!--</span><br><span class="line">              dataSource:表示数据源，连接数据库的</span><br><span class="line">                 type：表示数据源的类型， POOLED表示使用连接池</span><br><span class="line">           --&gt;</span><br><span class="line">           &lt;dataSource type=&quot;POOLED&quot;&gt;</span><br><span class="line">               &lt;!--</span><br><span class="line">                  driver, user, username, password 是固定的，不能自定义。</span><br><span class="line">               --&gt;</span><br><span class="line">               &lt;!--数据库的驱动类名--&gt;</span><br><span class="line">               &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;</span><br><span class="line">               &lt;!--连接数据库的url字符串--&gt;</span><br><span class="line">               &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/springdb&quot;/&gt;</span><br><span class="line">               &lt;!--访问数据库的用户名--&gt;</span><br><span class="line">               &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;</span><br><span class="line">               &lt;!--密码--&gt;</span><br><span class="line">               &lt;property name=&quot;password&quot; value=&quot;123456&quot;/&gt;</span><br><span class="line">           &lt;/dataSource&gt;</span><br><span class="line">       &lt;/environment&gt;</span><br><span class="line"></span><br><span class="line">       &lt;!--表示线上的数据库，是项目真实使用的库--&gt;</span><br><span class="line">       &lt;environment id=&quot;online&quot;&gt;</span><br><span class="line">           &lt;transactionManager type=&quot;JDBC&quot;/&gt;</span><br><span class="line">           &lt;dataSource type=&quot;POOLED&quot;&gt;</span><br><span class="line">               &lt;!-- MySQL数据库驱动 --&gt;</span><br><span class="line">               &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot; /&gt;</span><br><span class="line">               &lt;!-- 连接数据库的URL --&gt;</span><br><span class="line">               &lt;property name=&quot;url&quot;</span><br><span class="line">                   value=&quot;jdbc:mysql://localhost:3306/test?characterEncoding=utf8&quot; /&gt;</span><br><span class="line">               &lt;property name=&quot;username&quot; value=&quot;root&quot; /&gt;</span><br><span class="line">               &lt;property name=&quot;password&quot; value=&quot;root&quot; /&gt;</span><br><span class="line">           &lt;/dataSource&gt;</span><br><span class="line">       &lt;/environment&gt;</span><br><span class="line">   &lt;/environments&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!-- sql mapper(sql映射文件)的位置--&gt;</span><br><span class="line">   &lt;mappers&gt;</span><br><span class="line">       &lt;!--一个mapper标签指定一个文件的位置。</span><br><span class="line">          从类路径开始的路径信息。  target/clasess(类路径)</span><br><span class="line">       --&gt;</span><br><span class="line">       &lt;mapper resource=&quot;com/bjpowernode/dao/StudentDao.xml&quot;/&gt;</span><br><span class="line">       &lt;!--&lt;mapper resource=&quot;com/bjpowernode/dao/SchoolDao.xml&quot; /&gt;--&gt;</span><br><span class="line">   &lt;/mappers&gt;</span><br><span class="line">&gt;&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<p>pom.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">     &lt;resource&gt;</span><br><span class="line">       &lt;directory&gt;src/main/java&lt;/directory&gt;&lt;!--所在的目录--&gt;</span><br><span class="line">       &lt;includes&gt;&lt;!--包括目录下的.properties,.xml 文件都会扫描到--&gt;</span><br><span class="line">         &lt;include&gt;**/*.properties&lt;/include&gt;</span><br><span class="line">         &lt;include&gt;**/*.xml&lt;/include&gt;</span><br><span class="line">       &lt;/includes&gt;</span><br><span class="line">       &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">     &lt;/resource&gt;</span><br><span class="line">   &lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li>创建使用mybatis类，通过mybatis是访问数据库。</li>
+</ol>
+<h2 id="insert操作"><a href="#insert操作" class="headerlink" title="insert操作"></a>insert操作</h2><p>dao.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--插入操作--&gt;</span><br><span class="line">&lt;insert id=&quot;insertStudent&quot;&gt;</span><br><span class="line">    insert into student values(#&#123;id&#125;,#&#123;name&#125;,#&#123;email&#125;,#&#123;age&#125;)</span><br><span class="line">&lt;/insert&gt;</span><br></pre></td></tr></table></figure>
+<p>test.java</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class TestMyBatis &#123;</span><br><span class="line">    //测试方法，测试功能</span><br><span class="line">    @Test</span><br><span class="line">    public void testInsert() throws IOException &#123;</span><br><span class="line"></span><br><span class="line">        //访问mybatis读取student数据</span><br><span class="line">        //1.定义mybatis主配置文件的名称, 从类路径的根开始（target/clasess）</span><br><span class="line">        String config=&quot;mybatis.xml&quot;;</span><br><span class="line">        //2.读取这个config表示的文件</span><br><span class="line">        InputStream in = Resources.getResourceAsStream(config);</span><br><span class="line">        //3.创建了SqlSessionFactoryBuilder对象</span><br><span class="line">        SqlSessionFactoryBuilder builder  = new SqlSessionFactoryBuilder();</span><br><span class="line">        //4.创建SqlSessionFactory对象</span><br><span class="line">        SqlSessionFactory factory = builder.build(in);</span><br><span class="line">        //5.获取SqlSession对象，从SqlSessionFactory中获取SqlSession</span><br><span class="line">        //SqlSession sqlSession = factory.openSession();</span><br><span class="line">        SqlSession sqlSession = factory.openSession(true);</span><br><span class="line">        //6.【重要】指定要执行的sql语句的标识。  sql映射文件中的namespace + &quot;.&quot; + 标签的id值</span><br><span class="line">        String sqlId = &quot;com.bjpowernode.dao.StudentDao.insertStudent&quot;;</span><br><span class="line">        //7. 重要】执行sql语句，通过sqlId找到语句</span><br><span class="line">        Student student  = new Student();</span><br><span class="line">        student.setId(1006);</span><br><span class="line">        student.setName(&quot;关羽&quot;);</span><br><span class="line">        student.setEmail(&quot;guanyu@163.com&quot;);</span><br><span class="line">        student.setAge(20);</span><br><span class="line">        int nums = sqlSession.insert(sqlId,student);</span><br><span class="line"></span><br><span class="line">        //mybatis默认不是自动提交事务的， 所以在insert ，update ，delete后要手工提交事务</span><br><span class="line">        //sqlSession.commit();</span><br><span class="line"></span><br><span class="line">        //8.输出结果</span><br><span class="line">        System.out.println(&quot;执行insert的结果=&quot;+nums);</span><br><span class="line"></span><br><span class="line">        //9.关闭SqlSession对象</span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="mybatis主要类"><a href="#mybatis主要类" class="headerlink" title="mybatis主要类"></a>mybatis主要类</h2><p>主要类的介绍</p>
+<ol>
+<li>Resources： mybatis中的一个类， 负责读取主配置文件<br><code>InputStream in = Resources.getResourceAsStream(&quot;mybatis.xml&quot;);</code></li>
+<li><code>SqlSessionFactoryBuilder</code> : 创建SqlSessionFactory对象，<br>  <code>SqlSessionFactoryBuilder builder  = new SqlSessionFactoryBuilder();</code><br> //创建SqlSessionFactory对象<br> <code>SqlSessionFactory factory = builder.build(in);</code></li>
+<li><code>SqlSessionFactory</code> ： 重量级对象， 程序创建一个对象耗时比较长，使用资源比较多。<br>在整个项目中，有一个就够用了。<br><code>SqlSessionFactory</code>:接口  ， 接口实现类： DefaultSqlSessionFactory<br><code>SqlSessionFactory</code>作用： 获取SqlSession对象。<code>SqlSession sqlSession =factory.openSession();</code>  </li>
+</ol>
+<blockquote>
+<p><code>openSession()</code>方法说明：  </p>
+<ol>
+<li><code>openSession() </code>：无参数的， 获取是非自动提交事务的SqlSession对象  </li>
+<li><code>openSession(boolean)</code>: <code>openSession(true)</code>  获取自动提交事务的   &gt;<code>SqlSession.    openSession(false)</code>  非自动提交事务的SqlSession对象</li>
+</ol>
+</blockquote>
+<ol start="4">
+<li>SqlSession:<br>SqlSession接口 ：定义了操作数据的方法 例如 <code>selectOne()</code> ,<code>selectList()</code> ,<code>insert()</code>,<code>update()</code>, <code>delete()</code>, <code>commit()</code>, <code>rollback()</code><br>SqlSession接口的实现类DefaultSqlSession。</li>
+</ol>
+<p>使用要求： SqlSession对象不是线程安全的，需要在方法内部使用， 在执行sql语句之前，使用<code>openSession()</code>获取SqlSession对象。<br>在执行完sql语句后，需要<strong>关闭</strong>它，执行<code>SqlSession.close()</code>. 这样能保证他的使用是<strong>线程安全的</strong>。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/10/02/spring07/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/01/spring06/" class="archive-article-date">
-  	<time datetime="2021-10-01T04:23:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/01/spring06/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">spring06</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/01/spring06/">spring06</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/30/spring05/" class="archive-article-date">
-  	<time datetime="2021-09-30T05:33:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/30/spring05/">spring05</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/29/spring04/" class="archive-article-date">
-  	<time datetime="2021-09-29T07:29:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/29/spring04/">spring04</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/28/spring03/" class="archive-article-date">
-  	<time datetime="2021-09-28T11:10:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/28/spring03/">spring03</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/27/%E7%AE%97%E6%B3%9502/" class="archive-article-date">
-  	<time datetime="2021-09-27T08:14:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/27/%E7%AE%97%E6%B3%9502/">算法02</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/26/Spring02/" class="archive-article-date">
-  	<time datetime="2021-09-26T07:50:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/26/Spring02/">Spring02</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/" class="archive-article-date">
-  	<time datetime="2021-09-25T15:37:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/">算法记录</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/" class="archive-article-date">
-  	<time datetime="2021-09-24T05:33:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/">2021/9/24学习</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/09/23/the-first/" class="archive-article-date">
-  	<time datetime="2021-09-23T07:06:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/09/23/the-first/">the first</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -462,8 +396,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
