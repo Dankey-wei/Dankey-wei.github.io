@@ -152,6 +152,233 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-spring09" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/04/spring09/">spring09</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/04/spring09/" class="archive-article-date">
+  	<time datetime="2021-10-04T05:23:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="spring"><a href="#spring" class="headerlink" title="spring"></a>spring</h1><h2 id="spring集成MyBatis"><a href="#spring集成MyBatis" class="headerlink" title="spring集成MyBatis"></a>spring集成MyBatis</h2><p><strong>用的技术是：ioc</strong><br>为什么ioc：能把mybatis和spring集成在一起，像一个框架， 是因为ioc能创建对象。可以把mybatis框架中的对象交给spring统一创建， 开发人员从spring中获取对象。开发人员就不用同时面对两个或多个框架了，就面对一个spring。  </p>
+<blockquote>
+<p>mybatis使用步骤，对象</p>
+<ol>
+<li>定义dao接口 ，StudentDao</li>
+<li>定义mapper文件 StudentDao.xml</li>
+<li>定义mybatis的主配置文件 mybatis.xml</li>
+<li>创建dao的代理对象， StudentDao dao = SqlSession.getMapper(StudentDao.class);</li>
+</ol>
+<p>List<Student> students  = dao.selectStudents();</p>
+<p>要使用dao对象，需要使用getMapper()方法.<br>怎么能使用getMapper()方法，需要哪些条件  </p>
+<ol>
+<li>获取SqlSession对象， 需要使用SqlSessionFactory的openSession()方法。</li>
+<li>创建SqlSessionFactory对象。 通过读取mybatis的主配置文件，能创建SqlSessionFactory对象</li>
+</ol>
+<p>需要SqlSessionFactory对象， 使用Factory能获取SqlSession ，有了SqlSession就能有dao ， 目的就是获取dao对象<br>Factory创建需要读取主配置文件</p>
+</blockquote>
+<p>通过以上的说明，我们需要让spring创建以下对象</p>
+<ol>
+<li>独立的连接池类的对象,使用阿里的druid连接池</li>
+<li>SqlSessionFactory对象</li>
+<li>创建出dao对象</li>
+</ol>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>步骤：</p>
+<ol>
+<li><p>新建maven项目</p>
+</li>
+<li><p>加入maven的依赖</p>
+<ol>
+<li>spring依赖<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--spring核心ioc--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;5.2.5.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li>mybatis依赖<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> &lt;!--mybatis依赖--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;mybatis&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;3.5.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li>mysql驱动<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--mysql驱动--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;5.1.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--阿里公司的数据库连接池--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.1.12&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li>spring的事务的依赖<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--做spring事务用到的--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;5.2.5.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;5.2.5.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li>mybatis和spring集成的依赖： mybatis官方体用的，用来在spring项目中创建mybatis的SqlSesissonFactory，dao对象的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--mybatis和spring集成的依赖--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.3.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>创建实体类</p>
+</li>
+<li><p>创建dao接口和mapper文件</p>
+</li>
+<li><p>创建mybatis主配置文件<br>mybatis_config.xml模板</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--settings：控制mybatis全局行为--&gt;</span><br><span class="line">    &lt;settings&gt;</span><br><span class="line">        &lt;!--设置mybatis输出日志--&gt;</span><br><span class="line">        &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot;/&gt;</span><br><span class="line">    &lt;/settings&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--设置别名--&gt;</span><br><span class="line">    &lt;typeAliases&gt;</span><br><span class="line">        &lt;!--name:实体类所在的包名</span><br><span class="line">            表示com.bjpowernode.domain包中的列名就是别名</span><br><span class="line">            你可以使用Student表示com.bjpowenrode.domain.Student</span><br><span class="line">        --&gt;</span><br><span class="line">        &lt;package name=&quot;&quot;/&gt;</span><br><span class="line">    &lt;/typeAliases&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- sql mapper(sql映射文件)的位置--&gt;</span><br><span class="line">    &lt;mappers&gt;</span><br><span class="line">        &lt;!--</span><br><span class="line">          name：是包名， 这个包中的所有mapper.xml一次都能加载</span><br><span class="line">        --&gt;</span><br><span class="line">        &lt;!--mapper文件所在的包名--&gt;</span><br><span class="line">        &lt;package name=&quot;&quot;/&gt;</span><br><span class="line">        </span><br><span class="line">    &lt;/mappers&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>创建Service接口和实现类，属性是dao。</p>
+</li>
+<li><p>创建spring的配置文件：声明mybatis的对象交给spring创建//复制就行</p>
+<ol>
+<li><p>数据源DataSource</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">   把数据库的配置信息，写在一个独立的文件，编译修改数据库的配置内容</span><br><span class="line">   spring知道jdbc.properties文件的位置</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">&lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--声明数据源DataSource, 作用是连接数据库的--&gt;</span><br><span class="line">&lt;bean id=&quot;myDataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot;</span><br><span class="line">      init-method=&quot;init&quot; destroy-method=&quot;close&quot;&gt;</span><br><span class="line">    &lt;!--set注入给DruidDataSource提供连接数据库信息 --&gt;</span><br><span class="line">    &lt;!--    使用属性配置文件中的数据，语法 $&#123;key&#125; --&gt;</span><br><span class="line">    &lt;property name=&quot;url&quot; value=&quot;$&#123;jdbc.url&#125;&quot; /&gt;&lt;!--setUrl()--&gt;</span><br><span class="line">    &lt;property name=&quot;username&quot; value=&quot;$&#123;jdbc.username&#125;&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;password&quot; value=&quot;$&#123;jdbc.passwd&#125;&quot; /&gt;</span><br><span class="line">    &lt;property name=&quot;maxActive&quot; value=&quot;$&#123;jdbc.max&#125;&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>jdbc.properties</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jdbc.url=jdbc:mysql://localhost:3306/springdb</span><br><span class="line">jdbc.username=root</span><br><span class="line">jdbc.passwd=123456</span><br><span class="line">jdbc.max=30</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--声明的是mybatis中提供的SqlSessionFactoryBean类，这个类内部创建SqlSessionFactory的</span><br><span class="line">    SqlSessionFactory  sqlSessionFactory = new ..</span><br><span class="line">--&gt;</span><br><span class="line">&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</span><br><span class="line">    &lt;!--set注入，把数据库连接池付给了dataSource属性--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;dataSource&quot; ref=&quot;myDataSource&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--mybatis主配置文件的位置</span><br><span class="line">       configLocation属性是Resource类型，读取配置文件</span><br><span class="line">       它的赋值，使用value，指定文件的路径，使用classpath:表示文件的位置</span><br><span class="line">    --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis.xml&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>Dao对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--创建dao对象，使用SqlSession的getMapper（StudentDao.class）</span><br><span class="line">    MapperScannerConfigurer:在内部调用getMapper()生成每个dao接口的代理对象。</span><br><span class="line"></span><br><span class="line">--&gt;</span><br><span class="line">&lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;</span><br><span class="line">    &lt;!--指定SqlSessionFactory对象的id--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--指定包名， 包名是dao接口所在的包名。</span><br><span class="line">        MapperScannerConfigurer会扫描这个包中的所有接口，把每个接口都执行</span><br><span class="line">        一次getMapper()方法，得到每个接口的dao对象。</span><br><span class="line">        创建好的dao对象放入到spring的容器中的。 dao对象的默认名称是 接口名首字母小写</span><br><span class="line">    --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;basePackage&quot; value=&quot;com.bjpowernode.dao&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>声明自定义的service</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--声明service--&gt;</span><br><span class="line">&lt;bean id=&quot;studentService&quot; class=&quot;com.bjpowernode.service.impl.StudentServiceImpl&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;studentDao&quot; ref=&quot;studentDao&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>创建测试类，获取Service对象，通过service调用dao完成数据库的访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void testServiceInsert()&#123;</span><br><span class="line"></span><br><span class="line">    String config=&quot;applicationContext.xml&quot;;</span><br><span class="line">    ApplicationContext ctx = new ClassPathXmlApplicationContext(config);</span><br><span class="line">    //获取spring容器中的dao对象</span><br><span class="line">    StudentService service = (StudentService) ctx.getBean(&quot;studentService&quot;);</span><br><span class="line">    Student student  = new Student();</span><br><span class="line">    student.setId(1015);</span><br><span class="line">    student.setName(&quot;李胜利&quot;);</span><br><span class="line">    student.setEmail(&quot;zhoufeng@qq.com&quot;);</span><br><span class="line">    student.setAge(26);</span><br><span class="line">    int nums = service.addStudent(student);</span><br><span class="line">    //spring和mybatis整合在一起使用，事务是自动提交的。 无需执行SqlSession.commit();</span><br><span class="line">    System.out.println(&quot;nums=&quot;+nums);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/04/spring09/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-spring08" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/03/spring08/">spring08</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/03/spring08/" class="archive-article-date">
+  	<time datetime="2021-10-03T05:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis"></a>MyBatis</h1><h2 id="动态代理："><a href="#动态代理：" class="headerlink" title="动态代理："></a>动态代理：</h2><p>使用SqlSession.getMapper(dao接口.lass)获取这个dao接口对象</p>
+<h2 id="传入参数：-从java代码中把数据传入到mapper文件的sql语句中。"><a href="#传入参数：-从java代码中把数据传入到mapper文件的sql语句中。" class="headerlink" title="传入参数： 从java代码中把数据传入到mapper文件的sql语句中。"></a>传入参数： 从java代码中把数据传入到mapper文件的sql语句中。</h2><ol>
+<li><code>parameterType</code> ： 写在mapper文件中的 一个属性。 表示dao接口中方法的参数的数据类型。<br>例如StudentDao接口:<br><code>public Student  selectStudentById(Integer id) </code></li>
+<li>一个简单类型的参数：<br>简单类型： mybatis把java的基本数据类型和String都叫简单类型。<br>在mapper文件获取简单类型的一个参数的值，使用 <code>#&#123;任意字符&#125;  </code><br>dao接口文件：<code>public Student  selectStudentById(Integer id)  </code><br>mapper文件:<code>select id,name, email,age from student where id=#&#123;studentId&#125;</code></li>
+</ol>
+<blockquote>
+<p>使用<code>#&#123;&#125;</code>之后， mybatis执行sql是使用的jdbc中的PreparedStatement对象<br>由mybatis执行下面的代码：</p>
+<ol>
+<li>mybatis创建<code>Connection</code> ， <code>PreparedStatement</code>对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String sql=&quot;select id,name, email,age from student where id=?&quot;;</span><br><span class="line">PreparedStatement pst = conn.preparedStatement(sql);</span><br><span class="line">pst.setInt(1,1001);</span><br></pre></td></tr></table></figure></li>
+<li>执行sql封装为<code>resultType=&quot;com.bjpowernode.domain.Student&quot;</code>这个对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> ResultSet rs = ps.executeQuery();</span><br><span class="line"> Student student = null;</span><br><span class="line"> while(rs.next())&#123;</span><br><span class="line">    //从数据库取表的一行数据， 存到一个java对象属性中</span><br><span class="line">    student = new Student();</span><br><span class="line">    student.setId(rs.getInt(&quot;id));</span><br><span class="line">    student.setName(rs.getString(&quot;name&quot;));</span><br><span class="line">    student.setEmail(rs.getString(&quot;email&quot;));</span><br><span class="line">    student.setAge(rs.getInt(&quot;age&quot;));</span><br><span class="line"> &#125;</span><br><span class="line">return student;  //给了dao方法调用的返回值</span><br></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+<ol start="3">
+<li><p>多个参数，使用<code>@Param</code>命名参数<br>接口 <code>public List&lt;Student&gt; selectMulitParam(@Param(&quot;myname&quot;) String name, @Param(&quot;myage&quot;) Integer age)</code><br>使用  <code>@Param(&quot;参数名&quot;)  String name </code><br>mapper文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  &lt;select&gt;</span><br><span class="line">      select * from student where name=#&#123;myname&#125; or age=#&#123;myage&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>多个参数，使用java对象<br> 语法: <code>#&#123;属性名&#125;</code>,javaType,jdbcType的值MyBatis中制动获取。</p>
+<p> vo: value object , 放一些存储数据的类。比如说 提交请求参数， name ,age </p>
+<pre><code>  现在想把name ,age 传给一个service 类。
+</code></pre>
+<p> vo: view object , 从servlet把数据返回给浏览器使用的类，表示显示结果的类。</p>
+<p> pojo: 普通的有set， get方法的java类。 普通的java对象</p>
+<p> Servlet — StudentService( addStudent( MyParam  param)  )</p>
+<p>entity（domain域）: 实体类， 和数据库中的表对应的类。</p>
+</li>
+</ol>
+<h2 id="和"><a href="#和" class="headerlink" title="# 和  $"></a># 和  $</h2><p><code>select id,name, email,age from student where id=#&#123;studentId&#125;  </code></p>
+<p><code>#</code>的结果：</p>
+<p><code>select id,name, email,age from student where id=? </code></p>
+<p><code>select id,name, email,age from student where id=$&#123;studentId&#125;</code></p>
+<p> <code>$</code> 的结果：</p>
+<p> <code>select id,name, email,age from student where id=1001</code></p>
+<p> <code>String sql=&quot;select id,name, email,age from student where id=&quot; + &quot;1001&quot;;</code></p>
+<p> 使用的Statement对象执行sql， 效率比PreparedStatement低。<br> <code>$</code>:可以替换表名或者列名， 你能确定数据是安全的。可以使用<code>$</code>  </p>
+<p> <code>#</code> 和 <code>$</code>区别:</p>
+<ol>
+<li>#使用 ？在sql语句中做站位的， 使用PreparedStatement执行sql，效率高</li>
+<li>#能够避免sql注入，更安全。</li>
+<li>$不使用占位符，是字符串连接方式，使用Statement对象执行sql，效率低</li>
+<li>$有sql注入的风险，缺乏安全性。</li>
+<li>$:可以替换表名或者列名</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/03/spring08/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-spring07" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1217,163 +1444,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/09/25/%E7%AE%97%E6%B3%95%E8%AE%B0%E5%BD%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-第一条学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/">2021/9/24学习</a>
-    </h1>
-  
-
-        
-        <a href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/" class="archive-article-date">
-  	<time datetime="2021-09-24T05:33:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="第一章-Spring"><a href="#第一章-Spring" class="headerlink" title="第一章 Spring"></a>第一章 Spring</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>轻量</li>
-<li>耦合</li>
-<li>方便各种优秀框架集合<h2 id="Spring体系结构"><a href="#Spring体系结构" class="headerlink" title="Spring体系结构"></a>Spring体系结构</h2><img src="Dankey-wei.github.io/img/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png" alt="体系结构图"></li>
-</ul>
-<h2 id="ioc"><a href="#ioc" class="headerlink" title="ioc"></a>ioc</h2><h3 id="java中创建对象的方式："><a href="#java中创建对象的方式：" class="headerlink" title="java中创建对象的方式："></a>java中创建对象的方式：</h3><ul>
-<li>  构造方法</li>
-<li>  反射</li>
-<li>  序列化</li>
-<li>  克隆</li>
-<li>  ioc：容器创建对象  <blockquote>
-<p>  例如在xml中注册servlet，tomcat作为容器，里面从方的有servlet对象、Listener、Filter对象。</p>
-</blockquote>
-</li>
-<li>  动态代理</li>
-</ul>
-<h3 id="ioc技术实现"><a href="#ioc技术实现" class="headerlink" title="ioc技术实现"></a>ioc技术实现</h3><pre><code>DI是ioc的技术实现
-DI（Dependency Injection）:依赖注入
-</code></pre>
-<h2 id="junit"><a href="#junit" class="headerlink" title="junit"></a>junit</h2><pre><code>单元测试，一个工具类
-</code></pre>
-<h3 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h3><p>1.需要加入junit依赖。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.11&lt;/version&gt;</span><br><span class="line">    &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>  2.创建测试作用的类：叫做测试类<br>    src/test/java目录中创建类</p>
-<p>  3.创建测试方法</p>
-<pre><code>1）public 方法
- 2）没有返回值 void 
- 3）方法名称自定义，建议名称是test + 你要测试方法名称
- 4）方法没有参数
- 5）方法的上面加入 @Test ,这样的方法是可以单独执行的。 不用使用main方法。
-</code></pre>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/09/24/%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-the-first" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/23/the-first/">the first</a>
-    </h1>
-  
-
-        
-        <a href="/2021/09/23/the-first/" class="archive-article-date">
-  	<time datetime="2021-09-23T07:06:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>##第一章<br>    创建博客
-    </p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/09/23/the-first/">展开全文 >></a>
         </p>
       
 
